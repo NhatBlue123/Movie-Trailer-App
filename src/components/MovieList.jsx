@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import PropTypes from "prop-types";
-import { useContext,useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { MovieContext } from "../context/MovieProvider";
+
+
+
 
 const responsive = {
   superLargeDesktop: {
@@ -22,47 +25,42 @@ const responsive = {
     items: 2,
   },
 };
-const opts = {
-  height: "390",
-  width: "640",
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 1,
-  },
-};
 
 const MovieList = ({ title, data }) => {
-  const {handleTrailer} = useContext(MovieContext);
-
-  return (
-    <div className="my-10 px-10 max-w-full ">
-      <h2 className="text-xl uppercase mb-4 text-white">{title}</h2>
-      <Carousel responsive={responsive} draggable={false}>
-        {data && data.length > 0 && data.map((movie) => (
-          <div onClick={()=>handleTrailer(movie.id)}
-            key={movie.id}
-            className="bg-cover bg-no-repeat bg-center w-[200px] h-[300px] relative hover:scale-110 transition-transform duration-500 ease-in-out cursor-pointer"
-            style={{
-              backgroundImage: `url(${import.meta.env.VITE_IMG_URL}${
-                movie.poster_path
-              })`,
-            }}
-          >
-            <div className="bg-black w-full h-full opacity-40 absolute top-0 left-0 z-0" />
-            <div className="relative  p-4 flex flex-col items-center justify-end h-full">
-              <h3 className="text-md uppercase text-white">
-                {movie.name || movie.title || movie.original_title}
-              </h3>
+  const {handleTrailer} = useContext(MovieContext)
+   return (
+    <div className="text-white p-10 mb-10">
+      <h2 className="uppercase text-xl mb-4">{title}</h2>
+      <Carousel responsive={responsive} className="flex items-center space-x-4">
+        {data && data.length > 0 &&
+          data.map((item) => (
+            <div key={item.id} className="w-[200px] h-[300px] relative  group" 
+            onClick={() => handleTrailer(item.id)}
+           >
+              <div className="group-hover:scale-105 transition-transform duration-500 ease-in-out w-full h-full cursor-pointer">
+                <div className="absolute top-0 left-0 w-full h-full bg-black/40" />
+                <img
+                  src={`${import.meta.env.VITE_IMG_URL}${item.poster_path}`}
+                  alt={item.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute bottom-4 left-2 ">
+                  <p className="uppercase text-md">
+                    {item.title || item.original_title}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </Carousel>
+
+      
     </div>
   );
 };
 
 MovieList.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   data: PropTypes.array,
 };
 
