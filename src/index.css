@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.movie-lists-container {
+    display: flex; /* Makes the movie lists display side-by-side */
+    flex-direction: row;  /* Stacks them horizontally */
+    gap: 10px;  /* Add a gap between the movie lists */
+  }
+  
